@@ -19,8 +19,9 @@ var questions = [{
 
 // set area where questions will be displayed
 var questionArea = $("#questions");
+var answersArea = $("#answers");
 
-// setInterval/timer
+// setInterval
 var timer;
 
 // counters
@@ -38,9 +39,12 @@ var gameStart = function() {
     $("#start").hide();
     $("#done").show();
 
-    for (var i = 0; i <questions.length; i++) {
+    for (var i = 0; i < questions.length; i++) {
         questionArea.append("<h2>" + questions[i].question + "</h2>");
-        // pull array inside of an array?
+        // pull array inside of an array? foreach
+        questions[i].answers.forEach(function(option){
+            questionArea.append("<input type='radio' name='question-" + i + "'value-'" + option + "''>" + option);
+        });
     }
 }
 
@@ -51,22 +55,66 @@ var countdown = function() {
     if (time === 0) {
         alert("Time Up!");
         // add scores
-        // results page
+        postResults();
+        clearInterval();
     }
 }
 
 // add scores function
+var addScores = function() {
+    $.each($("input[name='question-0']:checked"), function() {
+        if ($(this).val()===questions[0].correct) {
+            correct++;
+        }
+        else {
+            incorrect++;
+        }
+    });
+    $.each($("input[name='question-1']:checked"), function() {
+        if ($(this).val()===questions[1].correct) {
+            correct++;
+        }
+        else {
+            incorrect++;
+        }
+    });
+    $.each($("input[name='question-2']:checked"), function() {
+        if ($(this).val()===questions[2].correct) {
+            correct++;
+        }
+        else {
+            incorrect++;
+        }
+    });
+    $.each($("input[name='question-3']:checked"), function() {
+        if ($(this).val()===questions[3].correct) {
+            correct++;
+        }
+        else {
+            incorrect++;
+        }
+    });    
+}
+
 
 // results page function
 var postResults = function() {
     clearInterval(timer);
     $("#questions").hide();
     $("#results").append("Number Correct: " + correct);
-    $("#results").append("Number Incorrect: " + incorrect);
-    $("#results").append("Unanswered: " + (questions.length - (correct + incorrect)));
+    $("#results").append("<div>Number Incorrect: " + incorrect + "</div>");
+    $("#results").append("<div>Unanswered: " + (questions.length - (correct + incorrect)) + "</div>");
+    $("#start").show();
+    $("#done").hide();
 }
 
 // click functions
 $("#start").on("click", function(){
     gameStart();
 });
+
+$("#done").on("click", function(){
+    addScores();
+    postResults();
+
+})
