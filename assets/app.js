@@ -43,7 +43,7 @@ var gameStart = function() {
         questionArea.append("<h2>" + questions[i].question + "</h2>");
         // pull array inside of an array? foreach
         questions[i].answers.forEach(function(option){
-            questionArea.append("<input type='radio' name='question-" + i + "'value-'" + option + "''>" + option);
+            questionArea.append("<input type='radio' name='questions-" + i + "' value-'" + option + "'>" + option);
         });
     }
 }
@@ -54,7 +54,7 @@ var countdown = function() {
     $("#countdown").html(time);
     if (time === 0) {
         alert("Time Up!");
-        // add scores
+        addScores();
         postResults();
         clearInterval();
     }
@@ -62,32 +62,32 @@ var countdown = function() {
 
 // add scores function
 var addScores = function() {
-    $.each($("input[name='question-0']:checked"), function() {
-        if ($(this).val()===questions[0].correct) {
+    $.each($("input[name='questions-0']:checked"), function() {
+        if ($(this).val() === questions[0].correct) {
             correct++;
         }
         else {
             incorrect++;
         }
     });
-    $.each($("input[name='question-1']:checked"), function() {
-        if ($(this).val()===questions[1].correct) {
+    $.each($("input[name='questions-1']:checked"), function() {
+        if ($(this).val() === questions[1].correct) {
             correct++;
         }
         else {
             incorrect++;
         }
     });
-    $.each($("input[name='question-2']:checked"), function() {
-        if ($(this).val()===questions[2].correct) {
+    $.each($("input[name='questions-2']:checked"), function() {
+        if ($(this).val() === questions[2].correct) {
             correct++;
         }
         else {
             incorrect++;
         }
     });
-    $.each($("input[name='question-3']:checked"), function() {
-        if ($(this).val()===questions[3].correct) {
+    $.each($("input[name='questions-3']:checked"), function() {
+        if ($(this).val() === questions[3].correct) {
             correct++;
         }
         else {
@@ -116,5 +116,4 @@ $("#start").on("click", function(){
 $("#done").on("click", function(){
     addScores();
     postResults();
-
 })
